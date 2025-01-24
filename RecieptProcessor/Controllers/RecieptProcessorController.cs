@@ -61,6 +61,7 @@ namespace RecieptProcessor.Controllers
         {
             var pointCounter = 0;
             var receipt = dBContext[id];
+
             if (receipt.Total != null)
             {
                 // 50 points if the total is a round dollar amount with no cents
@@ -95,6 +96,18 @@ namespace RecieptProcessor.Controllers
                         var value = (int)Math.Ceiling(double.Parse(item.Price) * .2);
                         pointCounter += value;
                     }
+                }
+            }
+
+            if (receipt.PurchaseDate != null)
+            {
+                // removing last character since it's only neccessary to check for odd days
+                var dayLastDigit = int.Parse(receipt.PurchaseDate.Substring(receipt.PurchaseDate.Length - 1));
+
+                // 6 points if the day in the purchase date is odd
+                if (dayLastDigit % 2 == 1)
+                {
+                    pointCounter += 6;
                 }
             }
 
