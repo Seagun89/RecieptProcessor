@@ -18,7 +18,6 @@ namespace RecieptProcessor.Controllers
 
         public RecieptProcessorController()
         {
-            
         }
 
         [HttpPost("receipts/process")]
@@ -41,39 +40,66 @@ namespace RecieptProcessor.Controllers
                 return BadRequest(ex);
             }
 
-            return Ok(new {id = Id});
+            return Ok(new { id = Id });
         }
 
         [HttpGet("receipts/{id}/getPoints")]
         public IActionResult GetPoints(string id)
         {
-            var pointCounter = 0;
             if (dBContext.ContainsKey(id))
             {
-                var receipt = dBContext[id];
-                if (receipt.Total != null)
-                {
-                    if (double.Parse(receipt.Total) % 1 == 0)
-                    {
-                        pointCounter += 50;
-                    }
-                    if (double.Parse(receipt.Total) % .25 == 0)
-                    {
-                        pointCounter += 25;
-                    }
-                }
-                if (receipt.Items != null)
-                {
-                    var pairItems = Math.Floor((decimal)receipt.Items.Count / 2);
-                    pointCounter += (int)pairItems * 5;
-                }
+                return Ok(new { points = pointCompiler(id) });
             }
             else
             {
                 return NotFound();
             }
-
-            return Ok(new {points = pointCounter});
         }
+
+        #region Helper Methods
+        private int pointCompiler(string id)
+        {
+            var pointCounter = 0;
+            var receipt = dBContext[id];
+            if (receipt.Total != null)
+            {
+                // 50 points if the total is a round dollar amount with no cents
+                if (double.Parse(receipt.Total) % 1 == 0)
+                {
+                    pointCounter += 50;
+                }
+                // 25 points if the total is a multiple of 0.25
+                if (double.Parse(receipt.Total) % .25 == 0)
+                {
+                    pointCounter += 25;
+                }
+            }
+           
+            if (receipt.Items != null)
+            {
+                // 5 points for every two items on the receipt.
+                if (receipt.Items.Count > 0)
+                {
+                    var pairItems = Math.Floor((decimal)receipt.Items.Count / 2);
+                    pointCounter += (int)pairItems * 5;
+                }
+
+                foreach (var item in receipt.Items)
+                {
+                    var trimSpaces = item.ShortDescription?.Length - item.ShortDescription?.Trim().Length;
+
+                    // If the trimmed length of the item description is a multiple of 3, multiply the price by 0.2 and round up to the nearest integer.
+                    // The result is the number of points earned.
+                    if (trimSpaces != 0 && item.Price != null && item.ShortDescription?.Trim().Length % 3 == 0)
+                    {
+                        var value = (int)Math.Ceiling(double.Parse(item.Price) * .2);
+                        pointCounter += value;
+                    }
+                }
+            }
+
+            return pointCounter;
+        }
+        #endregion
     }
 }
