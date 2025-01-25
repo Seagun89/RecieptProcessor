@@ -13,15 +13,31 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ReceiptProcessor/ReceiptProcessor.csproj", "ReceiptProcessor/"]
-RUN dotnet restore "./ReceiptProcessor/ReceiptProcessor.csproj"
+RUN dotnet restore "ReceiptProcessor/ReceiptProcessor.csproj"
+
 COPY . .
 WORKDIR "/src/ReceiptProcessor"
-RUN dotnet build "./ReceiptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "ReceiptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Stage for the test project
+FROM build AS test
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["ReceiptProcessorTests/ReceiptProcessorTests.csproj", "ReceiptProcessor/"]
+RUN dotnet restore "ReceiptProcessor/ReceiptProcessorTests.csproj"
+
+# Copy the test project files
+COPY . . 
+WORKDIR "/src/ReceiptProcessorTests"
+RUN dotnet build "ReceiptProcessorTests.csproj" -c $BUILD_CONFIGURATION
+
+# Run unit tests
+RUN dotnet test "ReceiptProcessorTests.csproj" --configuration $BUILD_CONFIGURATION --no-restore --verbosity normal
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./ReceiptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ReceiptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
