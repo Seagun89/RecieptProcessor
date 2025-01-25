@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RecieptProcessor.Models;
+using ReceiptProcessor.Models;
 
-namespace RecieptProcessor.Controllers
+namespace ReceiptProcessor.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RecieptProcessorController : Controller
+    public class ReceiptProcessorController : Controller
     {
         private string? Id;
-        private static readonly Dictionary<string, RecieptDto> dBContext = [];
+        private static readonly Dictionary<string, ReceiptDto> dBContext = [];
 
-        public RecieptProcessorController()
+        public ReceiptProcessorController()
         {
         }
 
         [HttpPost("receipts/process")]
-        public IActionResult Process([FromBody] RecieptDto reciept)
+        public IActionResult Process([FromBody] ReceiptDto reciept)
         {
             try
             {

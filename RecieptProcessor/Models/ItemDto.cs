@@ -1,4 +1,4 @@
-﻿namespace RecieptProcessor.Models
+﻿namespace ReceiptProcessor.Models
 {
     public class ItemDto
     {

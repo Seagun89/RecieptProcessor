@@ -12,19 +12,19 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["RecieptProcessor/RecieptProcessor.csproj", "RecieptProcessor/"]
-RUN dotnet restore "./RecieptProcessor/RecieptProcessor.csproj"
+COPY ["ReceiptProcessor/ReceiptProcessor.csproj", "ReceiptProcessor/"]
+RUN dotnet restore "./ReceiptProcessor/ReceiptProcessor.csproj"
 COPY . .
-WORKDIR "/src/RecieptProcessor"
-RUN dotnet build "./RecieptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/ReceiptProcessor"
+RUN dotnet build "./ReceiptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./RecieptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./ReceiptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "RecieptProcessor.dll"]
+ENTRYPOINT ["dotnet", "ReceiptProcessor.dll"]

@@ -1,8 +1,8 @@
-﻿using RecieptProcessor.Models;
+﻿using ReceiptProcessor.Models;
 
-namespace RecieptProcessor.Models
+namespace ReceiptProcessor.Models
 {
-    public class RecieptDto
+    public class ReceiptDto
     {
         public string? Retailer { get; set; }
         public string? PurchaseDate { get; set; }
