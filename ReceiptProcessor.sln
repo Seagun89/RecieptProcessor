@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecieptProcessor", "RecieptProcessor\RecieptProcessor.csproj", "{0FF6B7D9-5B93-4F9A-A829-ED21D7AF30EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReceiptProcessor", "RecieptProcessor\ReceiptProcessor.csproj", "{0FF6B7D9-5B93-4F9A-A829-ED21D7AF30EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReceiptProcessorTests", "RecieptProcessorTests\ReceiptProcessorTests.csproj", "{5AF69C9F-D0FD-42C4-94EC-F9D541E86282}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0FF6B7D9-5B93-4F9A-A829-ED21D7AF30EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FF6B7D9-5B93-4F9A-A829-ED21D7AF30EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FF6B7D9-5B93-4F9A-A829-ED21D7AF30EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF69C9F-D0FD-42C4-94EC-F9D541E86282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF69C9F-D0FD-42C4-94EC-F9D541E86282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF69C9F-D0FD-42C4-94EC-F9D541E86282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF69C9F-D0FD-42C4-94EC-F9D541E86282}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
