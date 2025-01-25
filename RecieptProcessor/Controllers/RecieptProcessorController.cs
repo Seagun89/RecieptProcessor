@@ -1,11 +1,5 @@
-﻿using System.Net;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RecieptProcessor.Models;
-using System.Linq;
-using System.Numerics;
-using System.Reflection;
 
 namespace RecieptProcessor.Controllers
 {
