@@ -92,7 +92,7 @@ namespace ReceiptProcessor.Controllers
 
                     // If the trimmed length of the item description is a multiple of 3, multiply the price by 0.2 and round up to the nearest integer.
                     // The result is the number of points earned.
-                    if (trimSpaces != 0 && item.Price != null && item.ShortDescription?.Trim().Length % 3 == 0)
+                    if (trimSpaces != 0 && item.Price != null && trimSpaces % 3 == 0)
                     {
                         var value = (int)Math.Ceiling(double.Parse(item.Price) * .2);
                         pointCounter += value;
