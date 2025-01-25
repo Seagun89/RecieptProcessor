@@ -23,7 +23,7 @@ RUN dotnet build "ReceiptProcessor.csproj" -c $BUILD_CONFIGURATION -o /app/build
 FROM build AS test
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ReceiptProcessorTests/ReceiptProcessorTests.csproj", "ReceiptProcessor/"]
+COPY ["ReceiptProcessorTests/ReceiptProcessorTests.csproj", "ReceiptProcessorTests/"]
 RUN dotnet restore "ReceiptProcessor/ReceiptProcessorTests.csproj"
 
 # Copy the test project files
