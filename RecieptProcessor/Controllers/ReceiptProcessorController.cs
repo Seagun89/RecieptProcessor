@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using ReceiptProcessor.Models;
 
 namespace ReceiptProcessor.Controllers
@@ -19,7 +20,7 @@ namespace ReceiptProcessor.Controllers
         {
             try
             {
-                if (reciept.Retailer == null || reciept.Retailer == string.Empty)
+                if (reciept.Retailer == null || reciept.Retailer == string.Empty || reciept == null)
                 {
                     throw new Exception();
                 }
