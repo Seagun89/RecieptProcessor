@@ -62,6 +62,12 @@ namespace RecieptProcessor.Controllers
             var pointCounter = 0;
             var receipt = dBContext[id];
 
+            if (receipt.Retailer != null)
+            {
+                // 1 point for every alphanumeric character
+                pointCounter = receipt.Retailer.Count(c => char.IsLetterOrDigit(c));
+            }
+           
             if (receipt.Total != null)
             {
                 // 50 points if the total is a round dollar amount with no cents
@@ -87,7 +93,7 @@ namespace RecieptProcessor.Controllers
 
                 foreach (var item in receipt.Items)
                 {
-                    var trimSpaces = item.ShortDescription?.Length - item.ShortDescription?.Trim().Length;
+                    var trimSpaces = item.ShortDescription?.Trim().Length;
 
                     // If the trimmed length of the item description is a multiple of 3, multiply the price by 0.2 and round up to the nearest integer.
                     // The result is the number of points earned.
@@ -101,8 +107,9 @@ namespace RecieptProcessor.Controllers
 
             if (receipt.PurchaseDate != null)
             {
+                int removingLastDigit = receipt.PurchaseDate.Length - 1;
                 // removing last character since it's only neccessary to check for odd days
-                var dayLastDigit = int.Parse(receipt.PurchaseDate.Substring(receipt.PurchaseDate.Length - 1));
+                var dayLastDigit = int.Parse(receipt.PurchaseDate.Substring(removingLastDigit));
 
                 // 6 points if the day in the purchase date is odd
                 if (dayLastDigit % 2 == 1)
@@ -111,6 +118,18 @@ namespace RecieptProcessor.Controllers
                 }
             }
 
+            if (receipt.PurchaseTime != null)
+            {
+                int amountToSubstring = 2; // first 2 digits in the string
+                int beginTime = 14; // value for 2pm
+                int endTime = 16; // value for 4pm
+                var first2Digits = int.Parse(receipt.PurchaseTime.Substring(0, amountToSubstring));
+
+                if (first2Digits >= beginTime && first2Digits <= endTime)
+                {
+                    pointCounter += 10;
+                }
+            }
             return pointCounter;
         }
         #endregion
